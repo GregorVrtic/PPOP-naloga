@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link href="css/main.css" rel="stylesheet">
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script> <!--CRUD nujno potrebno za HTTP ZAHTEVE-->
+        <script src="https://unpkg.com/vue@3"></script>
+        <title>Oddaj Oglas</title>
+        <style>
+            .title {
+                color: red;
+            }
+    
+            .subtitle {
+                color: blue;
+            }
+        </style>
+    </head>
+
+
+    <body>
+        <br><br><br>
+
+        <section class="bg-primary text-light p-5">
+            <div class="container">
+                <div class="d-md-flex justify-content-between align-items-center">
+                    <h2 class="mb-3 mb-md-0">Tukaj lahko oddate oglas za vaše delo</h2>
+                 <!--   <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter email">
+                        <button class="btn btn-dark btn-lg" type="button">Button</button>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+
+        <section class="p-5">
+            <div class="container">
+                <div class="row text-center g-4">
+                    <div class="col-md">
+                        <div class="card bg-dark text-light">
+                            <div class="card-body text-center">
+                                <div class="h1 mb-3">
+                                    <i class="bi bi-laptop"></i>
+                                </div>
+                            </div>
+                            <h3 class="card-title mb-3">Na prvo stran</h3>
+                            <p class="card-text"> Z izpolnitvijo spodnjega obrazca lahko brezplačno oddate svoj oglas. potrebno je pustiti le kontaktne podatke.
+                                V primeru, da oglasa ne želite oddati, se lahko s spodnjo povezavo vrnete na začetno stran.
+                           
+                            </p>
+                            <a href=index.html class="btn btn-primary">Domov</a>
+                        </div>
+                    </div>
+    
+                    
+                    <div class="col-md">
+                        <div class="card bg-secondary text-light">
+                            <div class="card-body text-center">
+                                <div class="h1 mb-3">
+                                    <i class="bi bi-person-square"></i>
+                                </div>
+                            </div>
+                            <h3 class="card-title mb-3">Poišči oglase</h3>
+                            <p class="card-text"> Na naši spletni strani lahko poiščete več željenih oglasov. Oddaja oglasov je popolnoma brezplačna.
+                                Na spodnji povezavi lahko poiščete oglase primere za vas.  <br> <br>
+                            </p>
+                            <a href="isciOglas.html" class="btn btn-primary">Išči</a>
+                        </div>
+                    </div>
+                  
+
+                    <div class="col-md">
+                        <div class="card bg-success text-light">
+                            <div class="card-body text-center">
+                                <div class="h1 mb-3">
+                                    <i class="bi bi-person-square"></i>
+                                </div>
+                            </div>
+                            <h3 class="card-title mb-3">Poišči DELODAJALCA</h3>
+                            <p class="card-text"> Na naši spletni strani lahko poiščete več željenih oglasov. Oddaja oglasov je popolnoma brezplačna.
+                                Na spodnji povezavi lahko poiščete oglase primere za vas.  <br> <br>
+                            </p>
+                            <a href="delodajalec.html" class="btn btn-primary">Išči</a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <div class="container">
+            <div class="container-fluid">
+                <!--Tukaj se začne povezava z OSEBO-->
+                <section id="oseba">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><h3>ID</h3></th>
+                                <th><h3>IME</h3></th>
+                                <th><h3>PRIIMEK</h3></th>
+                                <th><h3>TELEFON</h3></th>
+                                <th><h3>EMAIL</h3></th>
+                                <th><h3>POKLIC</h3></th>
+                                <th><h3>MOŽNOSTI</h3></th>
+                            </tr>
+                        </thead>
+                    <tr v-for="oseba in osebe" v-on:click="populateRow(oseba)">
+                    <td><h3>{{oseba.oid}}</h3></td>
+                    <td><h3>{{oseba.ime}}</h3></td>
+                    <td><h3>{{oseba.priimek}}</h3></td>
+                    <td><h3>{{oseba.tel}}</h3></td>
+                    <td><h3>{{oseba.email}}</h3></td>
+                    <td><h3>{{oseba.poklic}}</h3></td>
+                    <td>
+                        <button type="button" class="btn btn-danger" v-on:click="deleteOseba(oseba.oid)">Izbriši podatke</button>
+                    </td>
+                    </tr>
+                    </table> 
+
+                    
+                    <h2 class="card-text text-center">Oglas lahko oddate z izpolnitvijo spodnjega obraza.</h2><br><br>
+                    <form class="row g-3 needs-validation" novalidation>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                           <span for="validationCustom01" class="input-group-text" id="inputGroup-sizing-default">Oid</span>
+                       </div> <input v-model="oseba.oid" type="number" class="form-control" aria-label="Default"
+                       aria-describedby="inputGroup-sizing-default" id="validationCustom01" required>
+                       </div>
+                    <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                       <span for="validationCustom02" class="input-group-text" id="inputGroup-sizing-default">Ime</span>
+                   </div> <input v-model="oseba.ime" type="text" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default" id="validationCustom02" required>
+                   </div><!-- :value="oseba.ime" @input="onInputName" ALI SAMO  v-model="oseba.ime"   -->
+                   <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                       <span for="validationCustom03" class="input-group-text" id="inputGroup-sizing-default">Priimek</span>
+                   </div> <input v-model="oseba.priimek" type="text" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default" id="validationCustom03" required>
+                   </div>
+                   <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                       <span for="validationCustom04" class="input-group-text" id="inputGroup-sizing-default">Kontaktni telefon</span>
+                   </div> <input v-model="oseba.tel" type="number" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default" id="validationCustom05" required>
+                   </div>
+                   <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                       <span for="validationCustom05" class="input-group-text" id="inputGroup-sizing-default">Elektronski naslov</span>
+                   </div> <input v-model="oseba.email" type="email" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default" id="validationCustom05" required>
+                   </div>
+                   <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                       <span for="validationCustom06" class="input-group-text" id="inputGroup-sizing-default">Poklic</span>
+                   </div> <input v-model="oseba.poklic" type="text" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default" v-model="oseba.poklic" id="validationCustom06" required>
+                   </div>
+                </form>
+
+                   <button v-on:click="addOseba" class="btn btn-primary" >Oddaj kontaktne podatke</button>&nbsp&nbsp&nbsp
+                   <button v-on:click="addOseba" class="btn btn-warning" >Uredi kontaktne podatke</button>
+                   <br><br><br><br>
+
+                   </section>
+                    <!--Tu se konča oseba-->
+               
+                    
+                    <!--Tu se začne oglas-->
+                    <section id="oglas">
+                        <form class="row g-3 needs-validation" novalidation>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">ID oglasa</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default" v-model="oglas.ogid">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Naslov oglas</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default" v-model="oglas.naslov">
+                        </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Vsebina oglasa</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default" v-model="oglas.vsebina">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span v-model="oseba.oid" class="input-group-text" id="inputGroup-sizing-default">Oid</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Default"
+                            aria-describedby="inputGroup-sizing-default">
+                    </div>
+                </div>
+
+                   
+
+                    <button class="btn btn-primary" @click="createOglas">Oddaj oglas!</button>
+                    <br><br><br>
+                    </div>
+                    </form>
+                     
+
+                      </section>
+                    <!--Tu se konča oglas-->
+              
+                 
+                   
+                <!--</section>-->
+            </div>
+        </div>
+        <!-- Optional JavaScript; choose one of the two! -->
+    
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+    
+         <script src="js/oseba.js"></script> 
+        <script src="js/oglas.js"></script> 
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <!--
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+    </body>
+
+
+
+
+</html>
